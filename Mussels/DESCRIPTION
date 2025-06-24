@@ -1,0 +1,12 @@
+Package: BFFMod
+Version: 1.0.1
+Title: Numerical Model of Benthic Filter Feeder Growth and Reproduction
+Author: Quinten Mudde <quinten.mudde@nioz.nl> and Karline Soetaert <karline.soetaert@nioz.nl>
+Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>
+Depends: R (>= 3.5.0), deSolve, FME
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+Description: Model of mussel dynamics based on DEB theory.
+License: GPL (>=3.0)
+NeedsCompilation: yes
+Packaged: 2025-05-29 12:13:29 UTC; qmudde
