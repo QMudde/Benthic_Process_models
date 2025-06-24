@@ -1,0 +1,10 @@
+useDynLib(dtPosidonia, .registration = TRUE)
+
+import(deSolve, marelac, diagram)
+importFrom("stats", "approx")
+
+export(Posidonia_run)
+export(Posidonia_get_parms, Posidonia_get_vars, 
+       Posidonia_get_states, Posidonia_get_forcings)
+
+S3method("plot", "dtPosidonia")

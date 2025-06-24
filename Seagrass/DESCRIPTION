@@ -1,0 +1,13 @@
+Package: dtPosidonia
+Version: 1.0
+Title: A model of Posidonia dynamics
+Author: Karline Soetaert <karline.soetaert@nioz.nl>, Quinten Mudde, Joran de Gang, Marilaure Gregoire
+Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>
+Depends: R (>= 3.5.0), deSolve, marelac, diagram
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+Description: Model of seagrass dynamics.
+License: GPL (>=3.0)
+LazyData: yes
+NeedsCompilation: yes
+Packaged: 2025-05-12 14:04:08 UTC; karlines
