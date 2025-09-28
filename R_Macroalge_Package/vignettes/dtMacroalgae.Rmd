@@ -1,0 +1,148 @@
+---
+title: 'dtMacroalgae: a model of macroalgae growth'
+author: "Quinten Mudde, Karline Soetaert"
+date: "25-august-2025"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{dtMacroalgae: a model of macroalgae growth}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+options(width = 100)
+require(dtMacroalgae)
+```
+
+The *dtMacroalgae* package models dynamics of Macroalgae populations.
+
+For now the package contains the following functions:  
+
+```{r}
+ls("package:dtMacroalgae")
+```
+
+# Function Macroalgae_run
+
+Function *Macroalgae_run* runs the dynamic Macroalgae model. 
+
+```{r}
+args(Macroalgae_run)
+```
+
+# Functions to obtain model settings
+
+```{r}
+args(Macroalgae_get_parms)
+```
+
+```{r}
+args(Macroalgae_get_vars)
+```
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Parms  <- Macroalgae_get_parms(as.vector = TRUE)
+States <- Macroalgae_get_states(as.vector = TRUE)
+```
+
+Create forcing functions, roughly based on Bahmbi output,
+
+```{r}
+t <- seq(0, 10*365, by = 1)
+f_Temperature <- cbind(t, 
+                      10 * sin((2*pi*(t-120)/365)) + 14)
+                        
+f_PHYTO    <- cbind(t, 
+                   5.5 * sin((2*pi*(t-120)/365)) + 6)
+  
+f_Light    <- cbind(t, 
+                   100 * sin((2*pi*(t-120)/365)) +150)
+
+f_NO3     <- cbind(t, 
+                  10 * sin((2*pi*(t+30)/365)) +15)
+   
+fNO3_coast <- cbind(t, 
+                    10 * sin((2*pi*(t+50)/365)) +15)
+
+f_NH4      <- cbind(t, 
+                    5 * sin((2*pi*(t+30)/365)) +7.5)
+  
+fNH4_coast <- cbind(t, 
+                   10 * sin((2*pi*(t-130)/365)) +15)
+  
+
+# assume PO4 is roughly 1/10 of DIN always
+f_PO4      <- cbind(t, 
+                    0.5 * sin((2*pi*(t+80)/365)) +0.6)
+   
+fPO4_coast <- cbind(t, 
+                    (fNO3_coast[,2] + fNH4_coast[,2])/10)
+
+f_Current   <- 0.1 # net currentspeed at bottom 
+
+f_O2        <- 200 # dissolved oxygen conc mmolO2/m3
+
+fOX_coast  <- cbind(t, 
+                   160 * sin((2*pi*(t+50)/365)) +200)
+
+```
+
+```{r}
+# run model for 10 years
+runtime <- seq(from = 1, to = (10*365), by = 1)
+
+phyMOD <- Macroalgae_run(
+              times = runtime, 
+              f_Temperature = f_Temperature, f_Current = f_Current, 
+              f_Light = f_Light, f_PHYTO = f_PHYTO, 
+              f_ExtNO3 = f_NO3, f_ExtNH4 = f_NH4, 
+              f_ExtPO4 = f_PO4, f_ExtO2 = f_O2)
+
+phyMOD_coast <- Macroalgae_run(
+              times = runtime, 
+              f_Temperature = f_Temperature, f_Current = f_Current, 
+              f_Light = f_Light, f_PHYTO = f_PHYTO,
+              f_ExtNO3 = fNO3_coast, f_ExtNH4 = fNH4_coast, 
+              f_ExtPO4 = fPO4_coast, f_ExtO2 = fOX_coast)
+```
+
+```{r, fig.width=10, fig.height=10}
+plot(phyMOD, phyMOD_coast, 
+     which = c("DW", "WW", "STRUCT_C", "RESERVE_C",
+               "TF_gain", "TF_resp"))
+
+
+plot(phyMOD, phyMOD_coast, 
+     which = c("RESERVE_C", "RC_SCr", "RC_sat",
+               "RESERVE_N", "RN_SCr", "RN_sat",
+               "RESERVE_P", "RP_SCr", "RP_sat"))
+
+plot(phyMOD, phyMOD_coast, 
+     which = c("Shading_Eff", "Quota_growth_fac", "RC_sat",
+               "Growth", "Mortality", "Respiration_loss",
+               "RC_SCr", "STRUCT_C", "RESERVE_C"))
+```
+
+## Plotting output variables and state variables
+
+The model solution is a matrix with values of the state variables and the output variables, at each time step.
+We can select *which* variables we want to be displayed and how the figures have to be arranged (*mfrow = c(4, 3)* means 4 rows and 3 columns)
+
+```{r, fig.width = 8, fig.height=10}
+plot(phyMOD, phyMOD_coast, mfrow = c(4, 3), which = 1:12)
+plot(phyMOD, phyMOD_coast, mfrow = c(4, 3), which = 13:24)
+
+```
+
+
+# References
+Package to solve the differential equations
+
+Karline Soetaert, Thomas Petzoldt, R. Woodrow Setzer (2010). Solving Differential Equations in
+  R: Package deSolve. Journal of Statistical Software, 33(9), 1--25. URL
+  http://www.jstatsoft.org/v33/i09/ DOI 10.18637/jss.v033.i09.
+
