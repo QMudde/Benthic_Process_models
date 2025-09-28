@@ -2,10 +2,10 @@
 Benthic Process Model code for NECCTON (WP6)
 
 Repository contians code for mechanistic process models of benthic lifeforms. 
-Process models are developed for Mussel beds (Mytilus galloprovincialis), Seaweeds (Phyllophora & Cystoseira) and Seagrass (Posidonia). Model dynamics are based on detailed, species specific ecophysiologial processes and rates.
+Process models are developed for Mussel beds (Mytilus galloprovincialis), Seaweeds (Phyllophora) and Seagrass (Posidonia). Model dynamics are based on detailed, species specific ecophysiologial processes and rates.
 Models are formulated as a complex systems of differential equations, they are written in Fortran and can be called in R. Calibration is based on rates provided by literature and the associated calibration datasets. 
 
-In the scope of the NECCTON project, the models are used to predict growth and reproduction potential of shellfish in the Black sea, and predict growth and competition of Phyllophora and Cystoseira seaweed assemblages in the Black sea.
+In the scope of the NECCTON project, the models are used to predict growth and reproduction potential of shellfish in the Black sea, and predict growth of Phyllophora in competition with Cystoseira seaweed assemblages in the Black sea.
 For the Black sea, the models can be one-way coupled with BAMHBI-NEMO, meaning that the models can make use of direct input from BAMHBI-NEMO, but cannot provide feedback. 
 Black Sea reanalysis data, obtained from Copernicus Marine, can be used as forcings.
 
