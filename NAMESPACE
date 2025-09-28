@@ -1,9 +1,0 @@
-useDynLib(dtMacroalgae, .registration = TRUE)
-
-import(deSolve)
-
-export(Macroalgae_run)
-export(Macroalgae_get_parms, Macroalgae_get_vars, 
-       Macroalgae_get_states, Macroalgae_get_forcings)
-
-S3method("plot", "dtMacroalgae")
